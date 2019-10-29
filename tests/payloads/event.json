@@ -1,0 +1,39 @@
+{
+  "Event": {
+    "Cluster": "local",
+    "Group": "topicA_consumer",
+    "ID": "",
+    "Start": "0001-01-01T00: 00: 00Z",
+    "Extras": {
+      "key1": "value1",
+      "key2": "value2"
+    },
+    "Result": {
+      "cluster": "local",
+      "group": "topicA_consumer",
+      "status": "OK",
+      "complete": 1,
+      "partitions": [],
+      "partition_count": 4,
+      "maxlag": {
+        "topic": "topicA",
+        "partition": 0,
+        "owner": "",
+        "status": "OK",
+        "start": {
+          "offset": 3490,
+          "timestamp": 1572226136117,
+          "lag": 0
+        },
+        "end": {
+          "offset": 3539,
+          "timestamp": 1572226192020,
+          "lag": 0
+        },
+        "current_lag": 126,
+        "complete": 1
+      },
+      "totallag": 601
+    }
+  }
+}

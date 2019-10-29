@@ -1,0 +1,12 @@
+---
+
+pipeline:
+  release:
+    image: plugins/docker
+    registry: docker.io
+    repo: lowess/${DRONE_REPO_NAME}
+    tags:
+      - ${DRONE_TAG}
+    secrets: [ docker_username, docker_password ]
+    when:
+      event: tag
