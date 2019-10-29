@@ -11,7 +11,7 @@ from karrot.reporters.factory import ReporterFactory
 from karrot.config.logger import Logger
 
 # Init application logging
-Logger().init()
+Logger().init(os.getenv("KARROT_LOG", "DEBUG"))
 logger = structlog.get_logger()
 # Lower some logging levels
 structlog.get_logger('botocore').setLevel(logging.CRITICAL)
@@ -29,29 +29,30 @@ def create_app():
 
     if "FLASK_ENV" in os.environ:
         if os.environ["FLASK_ENV"] == 'prod':
-            app.config.from_object('reporter.config.prod.ProductionConfig')
+            app.config.from_object('karrot.config.prod.ProductionConfig')
         else:
             logger.setLevel(logging.DEBUG)
-            app.config.from_object('reporter.config.config.DevelopmentConfig')
+            app.config.from_object('karrot.config.config.DevelopmentConfig')
     else:
         logger.setLevel(logging.DEBUG)
-        app.config.from_object('reporter.config.config.DevelopmentConfig')
+        app.config.from_object('karrot.config.config.DevelopmentConfig')
 
     ################################################################################
     # Configure list of active reporters
     ################################################################################
 
-    for reporter in app.config["BURROW_REPORTERS"]:
-        logger.info("Getting reporter", reporter=reporter)
+    for reporter in app.config["KARROT_REPORTERS"]:
+        logger.debug("Initializing reporter", reporter=reporter)
         REPORTERS[reporter] = ReporterFactory.get(reporter=reporter)
 
+    logger.info("Karrot initialized with the following reporters", reporters=REPORTERS.keys())
     ################################################################################
     # Blueprints registration
     ################################################################################
 
-    from reporter.burrow.controllers import burrow
-    from reporter.heartbeat.controllers import heartbeat
-    from reporter.reporters.prometheus.controllers import prometheus
+    from karrot.burrow.controllers import burrow
+    from karrot.heartbeat.controllers import heartbeat
+    from karrot.reporters.prometheus.controllers import prometheus
 
     app.register_blueprint(burrow)
     app.register_blueprint(heartbeat)

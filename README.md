@@ -52,4 +52,23 @@ docker exec -it \
    --group topicA-consumer
 ```
 
+# Karrot Environment variables
+
+## Global Karrot env vars:
+
+| env                | value                   | description                              |
+|--------------------|-------------------------|------------------------------------------|
+| `KARROT_LOG`       | `(INFO|DEBUG|ERROR)`    | The log level to use for the Karrot app  |
+| `KARROT_REPORTERS` | `prometheus,cloudwatch` | A CSV list of reporters to use in Karrot |
+
+## Reporter specific env vars:
+
+| env                           | value                             | description                                                             |
+|-------------------------------|-----------------------------------|-------------------------------------------------------------------------|
+| `KARROT_CLOUDWATCH_NAMESPACE` | `GumGum/Kafka/Burrow/ConsumerLag` | The log level to use for the Karrot app                                 |
+| `KARROT_CLOUDWATCH_INTERVAL`  | 30                                | The Cloudwatch flush interval to execute the `put_metric_data` api call |
+
+
+
+
 Made with ♥ by GumGum engineers

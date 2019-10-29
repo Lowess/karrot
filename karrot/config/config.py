@@ -16,9 +16,9 @@ class Config(object):
 
     # Specific App section
 
-    BURROW_REPORTERS = ["prometheus", "cloudwatch"]
-    CLOUDWATCH_NAMESPACE = "GumGum/Kafka/Burrow/ConsumerLag"
-    CLOUDWATCH_REPORTER_INTERVAL = os.getenv(REPORTER_CLOUDWATCH, 30)
+    KARROT_REPORTERS = os.getenv("KARROT_REPORTERS", "prometheus,cloudwatch").split(',')
+    CLOUDWATCH_NAMESPACE = os.getenv("KARROT_CLOUDWATCH_NAMESPACE", "GumGum/Kafka/Burrow/ConsumerLag")
+    CLOUDWATCH_INTERVAL = os.getenv("KARROT_CLOUDWATCH_INTERVAL", 30)
 
 class DevelopmentConfig(Config):
     DEBUG = True
