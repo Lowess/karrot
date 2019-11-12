@@ -1,12 +1,18 @@
 ---
+kind: pipeline
+name: karrot
 
-pipeline:
-  release:
+steps:
+  - name: release
     image: plugins/docker
-    registry: docker.io
-    repo: lowess/${DRONE_REPO_NAME}
-    tags:
-      - ${DRONE_TAG}
-    secrets: [ docker_username, docker_password ]
+    settings:
+      registry: docker.io
+      repo: lowess/${DRONE_REPO_NAME}
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      tags:
+        - ${DRONE_TAG}
     when:
       event: tag
