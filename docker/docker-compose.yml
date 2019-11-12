@@ -1,16 +1,16 @@
 version: "2"
 services:
-  reporter:
-    image: burrow-reporter
+  karrot:
+    image: karrot
     build:
       context: ../
     environment:
-      FLASK_APP: reporter.wsgi
+      FLASK_APP: karrot.wsgi
       FLASK_ENV: production
     volumes:
       - ~/.aws:/root/.aws
     command:
-      - "reporter:create_app()"
+      - "karrot:create_app()"
       - -b :5000
       - -w 4
     ports:

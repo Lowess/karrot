@@ -36,8 +36,8 @@ group-blacklist="^(console-consumer-|python-kafka-consumer-).*$"
 group-whitelist=""
 extras={ key1="value1", key2="value2" }
 send-close=true
-url-open="http://reporter:5000/burrow"
-url-close="http://reporter:5000/burrow"
+url-open="http://karrot:5000/burrow"
+url-close="http://karrot:5000/burrow"
 template-open="/etc/burrow/events.tmpl"
 template-close="/etc/burrow/events.tmpl"
 
