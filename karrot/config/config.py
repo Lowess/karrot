@@ -20,5 +20,9 @@ class Config(object):
     CLOUDWATCH_NAMESPACE = os.getenv("KARROT_CLOUDWATCH_NAMESPACE", "GumGum/Kafka/Burrow/ConsumerLag")
     CLOUDWATCH_INTERVAL = os.getenv("KARROT_CLOUDWATCH_INTERVAL", 30)
 
+
+class ProductionConfig(Config):
+    DEBUG = False
+
 class DevelopmentConfig(Config):
     DEBUG = True

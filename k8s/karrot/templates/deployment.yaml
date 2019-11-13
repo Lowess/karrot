@@ -26,11 +26,9 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: FLASK_APP
-              value: 'karrot.wsgi'
+              value: karrot.wsgi
             - name: FLASK_ENV
               value: prod
-            - name: PYTHONPATH
-              value: /:/venv/lib/python3.7/site-packages
           args:
             - "karrot:create_app()"
             - -b :5000
