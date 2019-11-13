@@ -29,6 +29,10 @@ spec:
               value: karrot.wsgi
             - name: FLASK_ENV
               value: prod
+            {{- range $key, $value := .Values.karrot.env }}
+            - name: {{ $key }}
+              value: {{ $value }}
+            {{- end }}
           args:
             - "karrot:create_app()"
             - -b :5000

@@ -15,17 +15,17 @@ nameOverride: ""
 fullnameOverride: ""
 
 service:
-  type: ClusterIP
+  type: NodePort
   port: 80
 
 ingress:
-  enabled: false
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
+  enabled: true
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
   hosts:
-    - host: karrot.local
-      paths: []
+    - host: karrot.minikube
+      paths:
+        - /
 
   tls: []
   #  - secretName: chart-example-tls
@@ -43,6 +43,10 @@ resources: {}
   # requests:
   #   cpu: 100m
   #   memory: 128Mi
+
+karrot:
+  env:
+    AWS_DEFAULT_REGION: us-east-1
 
 nodeSelector: {}
 
