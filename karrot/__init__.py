@@ -29,7 +29,7 @@ def create_app():
 
     if "FLASK_ENV" in os.environ:
         if os.environ["FLASK_ENV"] == 'prod':
-            app.config.from_object('karrot.config.prod.ProductionConfig')
+            app.config.from_object('karrot.config.config.ProductionConfig')
         else:
             logger.setLevel(logging.DEBUG)
             app.config.from_object('karrot.config.config.DevelopmentConfig')
