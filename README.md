@@ -2,7 +2,7 @@
 
 ---
 
-### *Because [Karrot :carrot:]() help you move forward when you rely on [Burro :horse:](https://github.com/linkedin/Burrow)*
+### *Because [Karrot :carrot:](https://github.com/Lowess/karrot) help you move forward when you ride on [Burro :horse:](https://github.com/linkedin/Burrow)*
 
 ---
 
@@ -10,24 +10,86 @@
 
 ![Karrot Infrastructure Diagram](docs/img/karrot-diagram.png)
 
-### Getting Started
+# :pushpin: Requirements
 
-* Local Development with built-in Flask server (:warn: Do not use in prod!)
+If `cloudwatch` reporter is used (which is enabled by default), you must run Karrot with credentials that have the following IAM permissions:
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "cloudwatch:PutMetricData"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
+
+---
+
+# :rocket: Getting Started
+
+* Docker
+
+```bash
+docker run -it --rm \
+  --name karrot \
+  -v ~/.aws:/root/.aws \
+  lowess/karrot
+```
+
+* Kubernetes
+
+```bash
+# Add the Repository to Helm:
+$ helm repo add lowess-helm https://lowess.github.io/helm-charts
+
+# Install karrrot helm chart:
+$ helm install lowess-helm/karrot
+```
+
+* Local Development with built-in Flask server (:warning: [Do not use in production!](https://flask.palletsprojects.com/en/1.1.x/deploying/))
 
 ```bash
 export FLASK_APP=karrot
-export FLASK_DEV=development
+export FLASK_ENV=development
 flask run
 ```
 
-* Run in production with `gunicorn`:
+* Run in production with `gunicorn` (:white_check_mark: Valid for production usage):
 
 ```bash
 export FLASK_APP=karrot.wsgi
-export FLASK_DEV=production
-flask "karrot:create_app()" --bind 127.0.0.1:8001 -w 4
+export FLASK_ENV=production
+flask "karrot:create_app()" --bind 127.0.0.1:5000 -w 4
 ```
 
+---
+
+
+# Karrot Environment Variables
+
+## Global Karrot env vars:
+
+| env                | value                   | description                              |
+|--------------------|-------------------------|------------------------------------------|
+| `KARROT_LOG`       | `INFO, DEBUG, ERROR`    | The log level to use for the Karrot app  |
+| `KARROT_REPORTERS` | `prometheus,cloudwatch` | A CSV list of reporters to use in Karrot |
+
+## Reporter specific env vars:
+* Cloudwatch
+| env                           | value                             | description                                                             |
+|-------------------------------|-----------------------------------|-------------------------------------------------------------------------|
+| `KARROT_CLOUDWATCH_NAMESPACE` | `GumGum/Kafka/Burrow/ConsumerLag` | The Cloudwatch namespace prefix to use for lag reporting                |
+| `KARROT_CLOUDWATCH_INTERVAL`  | `30`                              | The Cloudwatch flush interval to execute the `put_metric_data` api call |
+
+---
+
+# :wrench: Developer Guide
 * Running a Kafka / Zk / Burrow / Karrot stack locally
 
 ```bash
@@ -54,22 +116,6 @@ docker exec -it \
    --from-beginning \
    --group topicA-consumer
 ```
-
-# Karrot Environment variables
-
-## Global Karrot env vars:
-
-| env                | value                   | description                              |
-|--------------------|-------------------------|------------------------------------------|
-| `KARROT_LOG`       | `INFO, DEBUG, ERROR`    | The log level to use for the Karrot app  |
-| `KARROT_REPORTERS` | `prometheus,cloudwatch` | A CSV list of reporters to use in Karrot |
-
-## Reporter specific env vars:
-
-| env                           | value                             | description                                                             |
-|-------------------------------|-----------------------------------|-------------------------------------------------------------------------|
-| `KARROT_CLOUDWATCH_NAMESPACE` | `GumGum/Kafka/Burrow/ConsumerLag` | The Cloudwatch namespace prefix to use for lag reporting                |
-| `KARROT_CLOUDWATCH_INTERVAL`  | `30`                              | The Cloudwatch flush interval to execute the `put_metric_data` api call |
 
 ---
 

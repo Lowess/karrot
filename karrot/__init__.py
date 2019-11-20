@@ -23,6 +23,9 @@ def create_app():
 
     app = Flask(__name__)
 
+    # Make context available in blueprints
+    app.app_context().push()
+
     ################################################################################
     ### Override with specific settings based on the FLASK_ENV env var
     ################################################################################

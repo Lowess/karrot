@@ -17,8 +17,9 @@ class Config(object):
     # Specific App section
 
     KARROT_REPORTERS = os.getenv("KARROT_REPORTERS", "prometheus,cloudwatch").split(',')
-    CLOUDWATCH_NAMESPACE = os.getenv("KARROT_CLOUDWATCH_NAMESPACE", "GumGum/Kafka/Burrow/ConsumerLag")
-    CLOUDWATCH_INTERVAL = os.getenv("KARROT_CLOUDWATCH_INTERVAL", 30)
+    KARROT_IAM_ROLE = os.getenv("KARROT_IAM_ROLE", None)
+    KARROT_CLOUDWATCH_NAMESPACE = os.getenv("KARROT_CLOUDWATCH_NAMESPACE", "GumGum/Kafka/Burrow/ConsumerLag")
+    KARROT_CLOUDWATCH_INTERVAL = os.getenv("KARROT_CLOUDWATCH_INTERVAL", 30)
 
 
 class ProductionConfig(Config):

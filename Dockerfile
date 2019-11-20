@@ -21,6 +21,8 @@ FROM python:3.7-stretch as app
 
 ENV PYTHONPATH /:/venv/lib/python3.7/site-packages
 ENV PATH $PATH:/venv/bin
+ENV FLASK_APP karrot.wsgi
+ENV FLASK_ENV production
 # Copy the app src and dependencies
 COPY --from=0 /src /app
 COPY --from=0 /venv /venv
@@ -30,4 +32,4 @@ WORKDIR /app
 EXPOSE 5000
 
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["run"]
+CMD ["karrot:create_app()", "--bind 127.0.0.1:5000", "-w 4"]

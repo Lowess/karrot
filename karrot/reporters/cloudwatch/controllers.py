@@ -2,29 +2,48 @@
 # -*- coding: utf-8 -*-
 
 import sys
-import boto3
 import datetime
+import boto3
+from botocore.exceptions import ClientError, ParamValidationError
 
 from structlog import get_logger
 from flask import Blueprint, Response, current_app as app
 from prometheus_client import generate_latest, CollectorRegistry, CONTENT_TYPE_LATEST, Gauge, Counter
 
 from karrot.reporters import Reporter
+from karrot.reporters.cloudwatch.utils import assumed_session
 
 
-logger = get_logger()
+logger = get_logger(__name__)
 
 
 CLOUDWATCH_API_CALLS_COUNT = Counter("reporter_cloudwatch_api_count", "Number of calls made to Cloudwatch",
                                  labelnames=['reporter'])
 
+
 class CloudwatchReporter(Reporter):
 
     def __init__(self, name):
         super().__init__(name)
-        self._client = boto3.client('cloudwatch')
+
+        iam_role = app.config['KARROT_IAM_ROLE']
+
+        try:
+            if iam_role is not None:
+                logger.info("Assuming IAM role", role=iam_role)
+                self._client = assumed_session(
+                    role_arn=iam_role,
+                    session_name="karrot").client('cloudwatch')
+            else:
+                self._client = boto3.client('cloudwatch')
+                logger.info("Initialized boto client successfully")
+        except (ClientError, ParamValidationError) as e:
+            logger.exception("Cloudn't initialize boto client", error=str(e))
+            sys.exit(1)
+
         self._metrics = []
-        self._flush_interval = datetime.timedelta(seconds=30)
+        self._namespace = app.config['KARROT_CLOUDWATCH_NAMESPACE']
+        self._flush_interval = datetime.timedelta(seconds=int(app.config['KARROT_CLOUDWATCH_INTERVAL']))
         self._last_flush_ts = datetime.datetime.now() - self._flush_interval
 
 
@@ -35,7 +54,6 @@ class CloudwatchReporter(Reporter):
 
     def stats(self, reporter):
         pass
-
 
     def _collect_lag_handler(self):
         metric_name = self._event.Result.group
@@ -79,7 +97,7 @@ class CloudwatchReporter(Reporter):
             try:
                 self._client.put_metric_data(
                       MetricData=self._metrics,
-                      Namespace=app.config['CLOUDWATCH_NAMESPACE']
+                      Namespace=self._namespace
                 )
                 logger.info("Lag has been reported to Cloudwatch", count=len(self._metrics))
                 CLOUDWATCH_API_CALLS_COUNT.labels(reporter=self._name).inc()
