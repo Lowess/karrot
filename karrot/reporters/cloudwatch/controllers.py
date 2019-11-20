@@ -17,14 +17,10 @@ from karrot.reporters.cloudwatch.utils import assumed_session
 logger = get_logger(__name__)
 
 
-CLOUDWATCH_API_CALLS_COUNT = Counter("reporter_cloudwatch_api_count", "Number of calls made to Cloudwatch",
-                                 labelnames=['reporter'])
-
-
 class CloudwatchReporter(Reporter):
 
-    def __init__(self, name):
-        super().__init__(name)
+    def __init__(self, name, metrics_prefix):
+        super().__init__(name, metrics_prefix)
 
         iam_role = app.config['KARROT_IAM_ROLE']
 
@@ -46,14 +42,20 @@ class CloudwatchReporter(Reporter):
         self._flush_interval = datetime.timedelta(seconds=int(app.config['KARROT_CLOUDWATCH_INTERVAL']))
         self._last_flush_ts = datetime.datetime.now() - self._flush_interval
 
+        self._cloudwatch_api_calls_count = Counter(f"{self._metrics_prefix}reporter_cloudwatch_api_count",
+                                                   "Number of calls made to Cloudwatch",
+                                                   labelnames=['reporter', 'status'])
+
 
     def process(self, event):
         super().process(event)
         self._collect_lag_handler()
         self.stats(self)
 
+
     def stats(self, reporter):
         pass
+
 
     def _collect_lag_handler(self):
         metric_name = self._event.Result.group
@@ -100,9 +102,11 @@ class CloudwatchReporter(Reporter):
                       Namespace=self._namespace
                 )
                 logger.info("Lag has been reported to Cloudwatch", count=len(self._metrics))
-                CLOUDWATCH_API_CALLS_COUNT.labels(reporter=self._name).inc()
+                self._cloudwatch_api_calls_count.labels(reporter=self._name, status="success").inc()
 
                 self._last_flush_ts = datetime.datetime.now()
                 self._metrics = []
             except Exception:
                 logger.exception("Lag could not be reported to cloudwatch")
+                self._cloudwatch_api_calls_count.labels(
+                    reporter=self._name, status="error").inc()

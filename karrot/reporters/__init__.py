@@ -10,11 +10,12 @@ logger = structlog.get_logger()
 
 class Reporter(object):
 
-    def __init__(self, name):
+    def __init__(self, name, metrics_prefix):
         """
             Parent class defining common method and attributes for child Reporters.
         """
         self._name = name
+        self._metrics_prefix = metrics_prefix
         self._event = None
         self._last_event_ts = None
 

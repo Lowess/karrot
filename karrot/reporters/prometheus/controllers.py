@@ -20,19 +20,20 @@ def metrics():
     data = generate_latest(registry)
     return Response(data, mimetype=CONTENT_TYPE_LATEST)
 
-# PROMETHEUS METRICS
-TOTAL_LAG = Gauge("consumer_lag", "Total lag accumulated by the consumer",
-                  labelnames=['cluster', 'consumer'],
-                  multiprocess_mode='livesum')
-
-REPORTERS_EVENTS_COUNT = Counter("reporter_events_count", "Number of events processed by the reporter",
-                  labelnames=['reporter'])
-
 
 class PrometheusReporter(Reporter):
 
-    def __init__(self, name):
-        super().__init__(name)
+    def __init__(self, name, metrics_prefix):
+        super().__init__(name, metrics_prefix)
+
+        self._prom_total_lag = Gauge(f"{self._metrics_prefix}consumer_lag",
+                                     "Total lag accumulated by the consumer",
+                                     labelnames=['cluster', 'consumer'],
+                                     multiprocess_mode='livesum')
+
+        self._prom_reporters_events_count = Counter(f"{self._metrics_prefix}reporter_events_count",
+                                                    "Number of events processed by the reporter",
+                                                    labelnames=['reporter'])
 
 
     def process(self, event):
@@ -46,9 +47,9 @@ class PrometheusReporter(Reporter):
         """
             Increment the number of events processed by the reporter.
         """
-        REPORTERS_EVENTS_COUNT.labels(reporter=reporter._name).inc()
+        self._prom_reporters_events_count.labels(reporter=reporter._name).inc()
 
 
     def _kafka_lag_handler(self):
-        TOTAL_LAG.labels(cluster=self._event.Result.cluster,
-                         consumer=self._event.Result.group).set(self._event.Result.totallag)
+        self._prom_total_lag.labels(cluster=self._event.Result.cluster,
+                                  consumer=self._event.Result.group).set(self._event.Result.totallag)

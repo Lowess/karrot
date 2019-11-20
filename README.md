@@ -1,3 +1,5 @@
+[![Build Status](https://cloud.drone.io/api/badges/Lowess/karrot/status.svg)](https://cloud.drone.io/Lowess/karrot)
+
 # :carrot: Karrot - A Kafka lag reporter processing events from Burrow
 
 ---
