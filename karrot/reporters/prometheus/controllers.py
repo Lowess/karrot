@@ -29,7 +29,7 @@ class PrometheusReporter(Reporter):
         self._prom_total_lag = Gauge(f"{self._metrics_prefix}consumer_lag",
                                      "Total lag accumulated by the consumer",
                                      labelnames=['cluster', 'consumer'],
-                                     multiprocess_mode='livesum')
+                                     multiprocess_mode='max')
 
         self._prom_reporters_events_count = Counter(f"{self._metrics_prefix}reporter_events_count",
                                                     "Number of events processed by the reporter",

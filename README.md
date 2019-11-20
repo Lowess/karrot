@@ -83,6 +83,13 @@ flask "karrot:create_app()" --bind 127.0.0.1:5000 -w 4
 | `KARROT_REPORTERS` | `prometheus,cloudwatch` | A CSV list of reporters to use in Karrot |
 
 ## Reporter specific env vars:
+
+* Prometheus
+
+| env                               | value     | description                                        |
+|-----------------------------------|-----------|----------------------------------------------------|
+| `KARROT_PROMETHEUS_METRIC_PREFIX` | `karrot_` | Prefix name to use for exported prometheus metrics |
+
 * Cloudwatch
 | env                           | value                             | description                                                             |
 |-------------------------------|-----------------------------------|-------------------------------------------------------------------------|
