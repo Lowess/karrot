@@ -14,5 +14,6 @@ steps:
         from_secret: docker_password
       tags:
         - ${DRONE_TAG}
+        - latest
     when:
       event: tag

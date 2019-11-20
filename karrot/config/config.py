@@ -15,11 +15,13 @@ class Config(object):
     SECRET_KEY = 'vx5ZLhCWh7f0UAWEcu63ayWMpR/O9KcpKVPjWcZ2Q0g'
 
     # Specific App section
-
     KARROT_REPORTERS = os.getenv("KARROT_REPORTERS", "prometheus,cloudwatch").split(',')
     KARROT_IAM_ROLE = os.getenv("KARROT_IAM_ROLE", None)
 
+    # Prometheus reporter specific
     KARROT_PROMETHEUS_METRIC_PREFIX = os.getenv("KARROT_PROMETHEUS_METRIC_PREFIX", "karrot_")
+
+    # Cloudwatch reporter specific
     KARROT_CLOUDWATCH_NAMESPACE = os.getenv("KARROT_CLOUDWATCH_NAMESPACE", "GumGum/Kafka/Burrow/ConsumerLag")
     KARROT_CLOUDWATCH_INTERVAL = os.getenv("KARROT_CLOUDWATCH_INTERVAL", 30)
 
