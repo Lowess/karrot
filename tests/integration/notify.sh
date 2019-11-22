@@ -5,7 +5,7 @@ if [ $# -eq 0 ]; then
 fi
 
 HOST=${1:-"localhost:5000"}
-FILE=${2:-"event.json"}
+FILE=${2:-"$(dirname $0)/../samples/event.json"}
 INTERVAL=${3:-"5"}
 
 echo "[$(date)] - Sending notifications every ${INTERVAL} seconds with JSON payload from ${FILE}"

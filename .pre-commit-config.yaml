@@ -1,0 +1,29 @@
+---
+repos:
+  - hooks:
+      - args:
+          - "--safe"
+        id: black
+        language_version: python3.7
+    repo: "https://github.com/ambv/black"
+    rev: 18.9b0
+
+  - hooks:
+      - additional_dependencies:
+          - black==18.9b0
+        id: blacken-docs
+        language_version: python3.7
+    repo: "https://github.com/asottile/blacken-docs"
+    rev: v0.3.0
+
+  - hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: debug-statements
+      - additional_dependencies:
+          - "flake8-bugbear == 18.2.0"
+        id: flake8
+        language_version: python3.7
+    repo: "https://github.com/pre-commit/pre-commit-hooks"
+    rev: v2.0.0

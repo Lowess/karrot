@@ -2,21 +2,17 @@
 # -*- coding: utf-8 -*-
 
 from flask import current_app as app
-from karrot.reporters.prometheus.controllers import PrometheusReporter
-from karrot.reporters.cloudwatch.controllers import CloudwatchReporter
+from karrot.reporters.prometheus.models import PrometheusReporter
+from karrot.reporters.cloudwatch.models import CloudwatchReporter
 
 
 class ReporterFactory(object):
-
     @staticmethod
     def get(reporter):
         """Return the proper notifier object based on the name"""
-
-        metrics_prefix = app.config["KARROT_PROMETHEUS_METRIC_PREFIX"]
-
-        if reporter == 'prometheus':
-            return PrometheusReporter('prometheus', metrics_prefix)
-        elif reporter == 'cloudwatch':
-            return CloudwatchReporter('cloudwatch', metrics_prefix)
+        if reporter == "prometheus":
+            return PrometheusReporter("prometheus")
+        elif reporter == "cloudwatch":
+            return CloudwatchReporter("cloudwatch")
         else:
             raise ValueError(reporter)
