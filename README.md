@@ -1,4 +1,8 @@
 [![Build Status](https://cloud.drone.io/api/badges/Lowess/karrot/status.svg)](https://cloud.drone.io/Lowess/karrot)
+[![Coverage Status](https://coveralls.io/repos/github/Lowess/karrot/badge.svg?branch=master)](https://coveralls.io/github/Lowess/karrot?branch=master)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-black.svg)](https://github.com/psf/black)
+[![Linter: flake8](https://img.shields.io/badge/linter-flake8-blue.svg)](http://flake8.pycqa.org/en/latest/)
+[![Linter: tests](https://img.shields.io/badge/tests-tox-yellow.svg)](hhttps://tox.readthedocs.io/en/latest)
 
 # :carrot: Karrot - A Kafka lag reporter processing events from Burrow
 
@@ -83,12 +87,6 @@ flask "karrot:create_app()" --bind 127.0.0.1:5000 -w 4
 | `KARROT_REPORTERS` | `prometheus,cloudwatch` | A CSV list of reporters to use in Karrot |
 
 ## Reporter specific env vars:
-
-* Prometheus
-
-| env                               | value     | description                                        |
-|-----------------------------------|-----------|----------------------------------------------------|
-| `KARROT_PROMETHEUS_METRIC_PREFIX` | `karrot_` | Prefix name to use for exported prometheus metrics |
 
 * Cloudwatch
 

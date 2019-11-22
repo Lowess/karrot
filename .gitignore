@@ -15,7 +15,6 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
 lib64/
 parts/
 sdist/
@@ -36,6 +35,7 @@ pip-delete-this-directory.txt
 
 # Unit test / coverage reports
 htmlcov/
+tests/results/coverage*
 .tox/
 .coverage
 .coverage.*
@@ -79,6 +79,7 @@ celerybeat-schedule
 .env
 
 # virtualenv
+.venv/
 venv/
 ENV/
 
@@ -88,5 +89,8 @@ ENV/
 # Rope project settings
 .ropeproject
 
-# Project prod configuration
-app/config/prod.py
+# Sphinx
+docs/sphinx/_build
+
+# Prometheus
+.prom

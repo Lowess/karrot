@@ -25,20 +25,20 @@ def assumed_session(role_arn, session_name, session=None, region=None):
         session = Session()
 
     def refresh():
-        credentials = session.client('sts').assume_role(
-            RoleArn=role_arn,
-            RoleSessionName=session_name)['Credentials']
+        credentials = session.client("sts").assume_role(
+            RoleArn=role_arn, RoleSessionName=session_name
+        )["Credentials"]
         return dict(
-            access_key=credentials['AccessKeyId'],
-            secret_key=credentials['SecretAccessKey'],
-            token=credentials['SessionToken'],
+            access_key=credentials["AccessKeyId"],
+            secret_key=credentials["SecretAccessKey"],
+            token=credentials["SessionToken"],
             # Silly that we basically stringify so it can be parsed again
-            expiry_time=credentials['Expiration'].isoformat())
+            expiry_time=credentials["Expiration"].isoformat(),
+        )
 
     session_credentials = RefreshableCredentials.create_from_metadata(
-        metadata=refresh(),
-        refresh_using=refresh,
-        method='sts-assume-role')
+        metadata=refresh(), refresh_using=refresh, method="sts-assume-role"
+    )
 
     # so dirty.. it hurts, no clean way to set this outside of the
     # internals poke. There's some work upstream on making this nicer
@@ -49,6 +49,6 @@ def assumed_session(role_arn, session_name, session=None, region=None):
     s = get_session()
     s._credentials = session_credentials
     if region is None:
-        region = s.get_config_variable('region') or 'us-east-1'
-    s.set_config_variable('region', region)
+        region = s.get_config_variable("region") or "us-east-1"
+    s.set_config_variable("region", region)
     return Session(botocore_session=s)
