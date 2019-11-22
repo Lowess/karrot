@@ -2,12 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-import json
-
-from prometheus_client import REGISTRY
 from flask import url_for
-from moto import mock_cloudwatch
-from karrot.reporters.cloudwatch.models import CloudwatchReporter
 
 logger = logging.getLogger(__name__)
 

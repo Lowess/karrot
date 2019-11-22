@@ -2,10 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-import json
 
-from prometheus_client import REGISTRY
-from flask import url_for
 from moto import mock_cloudwatch
 from karrot.reporters.cloudwatch.models import CloudwatchReporter
 
@@ -23,7 +20,3 @@ class TestCloudwatchReporter:
             for event in events:
                 logger.info(f"Sending event to reporter: {event}")
                 reporter.process(event=event)
-
-        # logger.warning(
-        #     REGISTRY.get_sample_value("karrot_reporter_cloudwatch_api_count")
-        # )

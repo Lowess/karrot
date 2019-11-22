@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import logging
-import json
 from prometheus_client import REGISTRY
 from flask import url_for
 

@@ -1,5 +1,5 @@
 [![Build Status](https://cloud.drone.io/api/badges/Lowess/karrot/status.svg)](https://cloud.drone.io/Lowess/karrot)
-![coverage](./tests/results/coverage.svg)
+[![Coverage Status](https://coveralls.io/repos/github/Lowess/karrot/badge.svg?branch=master)](https://coveralls.io/github/Lowess/karrot?branch=master)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-black.svg)](https://github.com/psf/black)
 [![Linter: flake8](https://img.shields.io/badge/linter-flake8-blue.svg)](http://flake8.pycqa.org/en/latest/)
 [![Linter: tests](https://img.shields.io/badge/tests-tox-yellow.svg)](hhttps://tox.readthedocs.io/en/latest)

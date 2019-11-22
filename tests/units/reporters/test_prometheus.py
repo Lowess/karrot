@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import logging
-import json
 
 from karrot.reporters.prometheus.models import PrometheusReporter
 from prometheus_client import REGISTRY

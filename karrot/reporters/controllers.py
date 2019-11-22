@@ -3,6 +3,7 @@
 
 import structlog
 from flask import Blueprint, jsonify, current_app as app
+
 logger = structlog.get_logger()
 
 # Define a blueprint
