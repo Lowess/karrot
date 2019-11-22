@@ -6,8 +6,16 @@
 import structlog
 from logging.config import dictConfig
 
+HAS_COLORAMA = False
+try:
+    import colorama
 
-class Logger():
+    HAS_COLORAMA = True
+except ImportError:
+    pass
+
+
+class Logger:
     """Logger configuration."""
 
     timestamper = structlog.processors.TimeStamper(fmt="%Y-%m-%d %H:%M:%S")
@@ -21,43 +29,41 @@ class Logger():
     ]
 
     @classmethod
-    def init(cls, level='DEBUG'):
+    def init(cls, level="DEBUG"):
         """Initialize application logging."""
-        dictConfig({
-            "version": 1,
-            "disable_existing_loggers": False,
-            "formatters": {
-                "plain": {
-                    "()": structlog.stdlib.ProcessorFormatter,
-                    "processor": structlog.dev.ConsoleRenderer(colors=False),
-                    "foreign_pre_chain": cls.pre_chain,
+        dictConfig(
+            {
+                "version": 1,
+                "disable_existing_loggers": False,
+                "formatters": {
+                    "plain": {
+                        "()": structlog.stdlib.ProcessorFormatter,
+                        "processor": structlog.dev.ConsoleRenderer(colors=HAS_COLORAMA),
+                        "foreign_pre_chain": cls.pre_chain,
+                    },
+                    "colored": {
+                        "()": structlog.stdlib.ProcessorFormatter,
+                        "processor": structlog.dev.ConsoleRenderer(colors=HAS_COLORAMA),
+                        "foreign_pre_chain": cls.pre_chain,
+                    },
+                    "json": {
+                        "()": structlog.stdlib.ProcessorFormatter,
+                        "processor": structlog.processors.JSONRenderer(),
+                        "foreign_pre_chain": cls.pre_chain,
+                    },
                 },
-                "colored": {
-                    "()": structlog.stdlib.ProcessorFormatter,
-                    "processor": structlog.dev.ConsoleRenderer(colors=True),
-                    "foreign_pre_chain": cls.pre_chain,
+                "handlers": {
+                    "default": {
+                        "level": level,
+                        "class": "logging.StreamHandler",
+                        "formatter": "colored",
+                    },
                 },
-                "json": {
-                    "()": structlog.stdlib.ProcessorFormatter,
-                    "processor": structlog.processors.JSONRenderer(),
-                    "foreign_pre_chain": cls.pre_chain,
+                "loggers": {
+                    "": {"handlers": ["default"], "level": level, "propagate": True},
                 },
-            },
-            "handlers": {
-                "default": {
-                    "level": level,
-                    "class": "logging.StreamHandler",
-                    "formatter": "colored",
-                },
-            },
-            "loggers": {
-                "": {
-                    "handlers": ["default"],
-                    "level": level,
-                    "propagate": True,
-                },
-            },
-        })
+            }
+        )
 
         structlog.configure(
             processors=[

@@ -1,2 +1,2 @@
 # Check setup.py
--e '.'
+-e '.[tests]'
