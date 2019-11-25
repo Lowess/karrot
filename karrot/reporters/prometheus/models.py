@@ -1,14 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import copy
 from karrot.reporters.models import Reporter
-from flask import current_app as app
 from structlog import get_logger
-from prometheus_client import (
-    Counter,
-    Gauge,
-)
+from prometheus_client import Counter, Gauge
 
 logger = get_logger()
 

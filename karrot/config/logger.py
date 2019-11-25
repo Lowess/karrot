@@ -8,7 +8,7 @@ from logging.config import dictConfig
 
 HAS_COLORAMA = False
 try:
-    import colorama
+    import colorama  # noqa: F401
 
     HAS_COLORAMA = True
 except ImportError:
@@ -57,10 +57,10 @@ class Logger:
                         "level": level,
                         "class": "logging.StreamHandler",
                         "formatter": "colored",
-                    },
+                    }
                 },
                 "loggers": {
-                    "": {"handlers": ["default"], "level": level, "propagate": True},
+                    "": {"handlers": ["default"], "level": level, "propagate": True}
                 },
             }
         )

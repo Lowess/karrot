@@ -8,10 +8,7 @@ from botocore.exceptions import ClientError, ParamValidationError
 
 from structlog import get_logger
 from flask import current_app as app
-from prometheus_client import (
-    Gauge,
-    Counter,
-)
+from prometheus_client import Counter
 
 from karrot.reporters.models import Reporter
 from karrot.reporters.cloudwatch.utils import assumed_session

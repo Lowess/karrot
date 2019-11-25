@@ -3,7 +3,7 @@
 
 """WSGI callable."""
 
-from karrot import create_app
+from karrot import create_app  # noqa: F401
 import gunicorn.app.wsgiapp as wsgi
 
 
