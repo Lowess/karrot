@@ -19,7 +19,8 @@ def assumed_session(role_arn, session_name, session=None, region=None):
 
     :return: a boto3 session using the sts assumed role credentials
 
-    Notes: Borrowed from https://github.com/cloud-custodian/cloud-custodian/blob/master/c7n/credentials.py
+    Notes: Borrowed from
+    https://github.com/cloud-custodian/cloud-custodian/blob/master/c7n/credentials.py
     """
     if session is None:
         session = Session()

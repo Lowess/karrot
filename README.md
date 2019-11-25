@@ -3,6 +3,7 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-black.svg)](https://github.com/psf/black)
 [![Linter: flake8](https://img.shields.io/badge/linter-flake8-blue.svg)](http://flake8.pycqa.org/en/latest/)
 [![Linter: tests](https://img.shields.io/badge/tests-tox-yellow.svg)](hhttps://tox.readthedocs.io/en/latest)
+[![Documentation Status](https://readthedocs.org/projects/karrot/badge/?version=latest)](https://karrot.readthedocs.io/en/latest/?badge=latest)
 
 # :carrot: Karrot - A Kafka lag reporter processing events from Burrow
 
@@ -82,7 +83,7 @@ flask "karrot:create_app()" --bind 127.0.0.1:5000 -w 4
 ## Global Karrot env vars:
 
 | env                | value                   | description                              |
-|--------------------|-------------------------|------------------------------------------|
+| ------------------ | ----------------------- | ---------------------------------------- |
 | `KARROT_LOG`       | `INFO, DEBUG, ERROR`    | The log level to use for the Karrot app  |
 | `KARROT_REPORTERS` | `prometheus,cloudwatch` | A CSV list of reporters to use in Karrot |
 
@@ -91,7 +92,7 @@ flask "karrot:create_app()" --bind 127.0.0.1:5000 -w 4
 * Cloudwatch
 
 | env                           | value                             | description                                                             |
-|-------------------------------|-----------------------------------|-------------------------------------------------------------------------|
+| ----------------------------- | --------------------------------- | ----------------------------------------------------------------------- |
 | `KARROT_CLOUDWATCH_NAMESPACE` | `GumGum/Kafka/Burrow/ConsumerLag` | The Cloudwatch namespace prefix to use for lag reporting                |
 | `KARROT_CLOUDWATCH_INTERVAL`  | `30`                              | The Cloudwatch flush interval to execute the `put_metric_data` api call |
 

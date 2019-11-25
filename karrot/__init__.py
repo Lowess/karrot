@@ -5,13 +5,7 @@ import os
 import logging
 import structlog
 
-from flask import (
-    Flask,
-    redirect,
-    url_for,
-    render_template,
-    send_from_directory,
-)
+from flask import Flask, redirect, url_for, render_template, send_from_directory
 from karrot.reporters.factory import ReporterFactory
 from karrot.config.logger import Logger
 
@@ -31,7 +25,7 @@ def create_app():
     app.app_context().push()
 
     ################################################################################
-    ### Override with specific settings based on the FLASK_ENV env var
+    # Override with specific settings based on the FLASK_ENV env var
     ################################################################################
 
     if "FLASK_ENV" in os.environ:
@@ -94,7 +88,7 @@ def create_app():
 
         @app.errorhandler(500)
         def internal_server_error(error):
-            return render_template("error.html", error=str(error), code=500,), 500
+            return render_template("error.html", error=str(error), code=500), 500
 
         @app.errorhandler(404)
         def page_not_found(error):
