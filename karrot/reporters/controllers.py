@@ -15,16 +15,17 @@ logger = structlog.get_logger()
 # Define a blueprint
 reporters = Blueprint("reporters", __name__, url_prefix="/reporters")
 
+
 # http://<hostname>/metrics endpoint
 @reporters.route("/", defaults={"reporter": None}, methods=["GET"])
 @reporters.route("/<reporter>", methods=["GET"])
 def display(reporter):
     """
-        Returns a simple JSON with the current application reporters.
+    Returns a simple JSON with the current application reporters.
 
-        :param str reporter: If provided returns details about this reporter only
-        :returns: json -- A JSON with the following format:
-        ``{"reporters": ["reporter1", "reporter2"]}``
+    :param str reporter: If provided returns details about this reporter only
+    :returns: json -- A JSON with the following format:
+    ``{"reporters": ["reporter1", "reporter2"]}``
     """
     logger.debug(f"{reporter}")
     data = {"reporters": []}

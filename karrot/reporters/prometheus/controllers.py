@@ -9,6 +9,7 @@ from prometheus_client import generate_latest, CollectorRegistry, CONTENT_TYPE_L
 # Define a blueprint
 prometheus = Blueprint("prometheus", __name__, url_prefix="/metrics")
 
+
 # http://<hostname>/metrics endpoint
 @prometheus.route("", methods=["GET"])
 def metrics():

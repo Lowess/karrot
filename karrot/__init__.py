@@ -4,8 +4,8 @@
 import os
 import logging
 import structlog
-
-from flask import Flask, redirect, url_for, render_template, send_from_directory
+from datetime import datetime
+from flask import Flask, redirect, url_for, send_from_directory, jsonify
 from karrot.reporters.factory import ReporterFactory
 from karrot.config.logger import Logger
 
@@ -44,8 +44,11 @@ def create_app():
     app.config["REPORTERS"] = {}
 
     for reporter in app.config["KARROT_REPORTERS"]:
-        logger.debug("Initializing reporter", reporter=reporter)
-        app.config["REPORTERS"][reporter] = ReporterFactory.get(reporter=reporter)
+        try:
+            logger.debug("Initializing reporter", reporter=reporter)
+            app.config["REPORTERS"][reporter] = ReporterFactory.get(reporter=reporter)
+        except ValueError:
+            logger.exception(f"{reporter} is not a valid reporter")
 
     logger.info(
         "Karrot initialized with the following reporters",
@@ -88,14 +91,26 @@ def create_app():
 
         @app.errorhandler(500)
         def internal_server_error(error):
-            return render_template("error.html", error=str(error), code=500), 500
+            return jsonify(
+                status="error",
+                msg=f"Karrot failed processing request {error}",
+                time=str(datetime.now()),
+            )
 
         @app.errorhandler(404)
         def page_not_found(error):
-            return render_template("error.html", error=str(error), code=404), 404
+            return jsonify(
+                status="error",
+                msg=f"Karrot endpoint not found {error}",
+                time=str(datetime.now()),
+            )
 
         @app.errorhandler(Exception)
         def exception_handler(error):
-            return render_template("error.html", error=error)
+            return jsonify(
+                status="error",
+                msg=f"Karrot raised an exception {error}",
+                time=str(datetime.now()),
+            )
 
     return app

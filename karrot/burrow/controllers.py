@@ -23,10 +23,10 @@ logger = get_logger()
 @burrow.route("", methods=["POST"])
 def webhook_handler():
     """
-        Process an incoming event from Burrow and call
-        ``event_handler()`` to process it.
+    Process an incoming event from Burrow and call
+    ``event_handler()`` to process it.
 
-        :param str event: A valid Burrow Json event POSTed to this endpoint
+    :param str event: A valid Burrow Json event POSTed to this endpoint
     """
     logger.debug("Hit on /burrow endpoint")
     data = request.get_json()
@@ -37,11 +37,11 @@ def webhook_handler():
 
 def event_handler(event):
     """
-        For each enabled reporter, call the ``process(event)`` function.
+    For each enabled reporter, call the ``process(event)`` function.
 
-        If ``prometheus`` is enabled, it tracks the reporter update.
+    If ``prometheus`` is enabled, it tracks the reporter update.
 
-        :param str event: A valid Burrow Json event
+    :param str event: A valid Burrow Json event
     """
     prom = app.config["REPORTERS"].get("prometheus", None)
 
