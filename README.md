@@ -85,7 +85,7 @@ flask "karrot:create_app()" --bind 127.0.0.1:5000 -w 4
 ## Global Karrot env vars:
 
 | env                | value                   | description                              |
-| ------------------ | ----------------------- | ---------------------------------------- |
+|--------------------|-------------------------|------------------------------------------|
 | `KARROT_LOG`       | `INFO, DEBUG, ERROR`    | The log level to use for the Karrot app  |
 | `KARROT_REPORTERS` | `prometheus,cloudwatch` | A CSV list of reporters to use in Karrot |
 
@@ -94,7 +94,7 @@ flask "karrot:create_app()" --bind 127.0.0.1:5000 -w 4
 * Cloudwatch
 
 | env                           | value                             | description                                                             |
-| ----------------------------- | --------------------------------- | ----------------------------------------------------------------------- |
+|-------------------------------|-----------------------------------|-------------------------------------------------------------------------|
 | `KARROT_CLOUDWATCH_NAMESPACE` | `GumGum/Kafka/Burrow/ConsumerLag` | The Cloudwatch namespace prefix to use for lag reporting                |
 | `KARROT_CLOUDWATCH_INTERVAL`  | `30`                              | The Cloudwatch flush interval to execute the `put_metric_data` api call |
 
@@ -151,12 +151,12 @@ The documentation can be genered with [Sphinx](https://www.sphinx-doc.org/en/2.0
 
 ```bash
 # Start the stack locally using docker-compose
-cd tests/
+cd docker/
 docker-compose up
 
 # Send messages to a test topic
 docker exec -it \
-  tests_kafka_1 \
+  docker_kafka_1 \
   kafka-producer-perf-test.sh \
   --producer-props bootstrap.servers=localhost:9092 \
   --throughput 10 \
@@ -166,7 +166,7 @@ docker exec -it \
 
 # Run a consumer polling from the test topic
 docker exec -it \
-   tests_kafka_1 \
+   docker_kafka_1 \
    kafka-console-consumer.sh \
    --bootstrap-server kafka:9092 \
    --topic topicA \

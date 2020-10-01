@@ -19,14 +19,12 @@ heartbeat = Blueprint("heartbeat", __name__, url_prefix="/heartbeat")
 @heartbeat.route("", methods=["GET"])
 def health():
     """
-        Returns a simple JSON string when the application is healthy.
+    Returns a simple JSON string when the application is healthy.
 
-        :returns: json -- A JSON with the following format:
-        ``{"status": "success",
-           "msg": "Burrow-reporter is healthy",
-           "time": "<datetime.now()>"}``
+    :returns: json -- A JSON with the following format:
+    ``{"status": "success",
+       "msg": "Burrow-reporter is healthy",
+       "time": "<datetime.now()>"}``
     """
     app.logger.debug("Healthcheck")
-    return jsonify(
-        status="success", msg="Burrow-reporter is healthy", time=str(datetime.now())
-    )
+    return jsonify(status="success", msg="Karrot is healthy", time=str(datetime.now()))

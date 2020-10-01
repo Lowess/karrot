@@ -21,10 +21,10 @@ config = Blueprint("config", __name__, url_prefix="/config")
 @config.route("", methods=["GET"])
 def display():
     """
-        Returns a simple JSON string with the current application configuration.
+    Returns a simple JSON string with the current application configuration.
 
-        :returns: json -- A JSON with the following format:
-        ``{"status": "success", "settings": "{...}"}``
+    :returns: json -- A JSON with the following format:
+    ``{"status": "success", "settings": "{...}"}``
     """
     logger.debug("Hit on /config endpoint")
 

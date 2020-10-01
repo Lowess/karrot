@@ -33,7 +33,7 @@ class PrometheusReporter(Reporter):
 
     def stats(self, reporter):
         """
-            Increment the number of events processed by the reporter.
+        Increment the number of events processed by the reporter.
         """
         REPORTER_EVENTS_COUNT.labels(reporter=reporter._name).inc()
 

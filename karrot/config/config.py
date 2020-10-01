@@ -32,3 +32,4 @@ class ProductionConfig(Config):
 
 class DevelopmentConfig(Config):
     DEBUG = True
+    KARROT_LOG = "DEBUG"
