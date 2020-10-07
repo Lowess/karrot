@@ -28,8 +28,9 @@ def webhook_handler():
 
     :param str event: A valid Burrow Json event POSTed to this endpoint
     """
-    logger.debug("Hit on /burrow endpoint")
     data = request.get_json()
+    logger.debug(f"Hit on /burrow endpoint with {data}")
+
     # TODO Deal with partial notifier failures with different return codes
     event_handler(data)
     return jsonify(data)

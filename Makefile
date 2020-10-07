@@ -7,6 +7,7 @@ docker:
 docker-run:
 	docker run -it --rm \
 	--name karrot \
+	-v ~/.aws:/root/.aws \
 	-p 5000:5000 \
 	lowess/karrot
 
@@ -37,6 +38,7 @@ docs:
 
 run:
 	@echo 🚀 Run development server...
+	rm -rf .prom; mkdir -p .prom; \
 	export prometheus_multiproc_dir=.prom; \
 	export FLASK_APP=karrot; \
 	export FLASK_ENV=dev; \
@@ -44,7 +46,8 @@ run:
 
 gunicorn:
 	@echo 🚀 Run production gunicorn...
+	rm -rf .prom; mkdir -p .prom; \
 	export prometheus_multiproc_dir=.prom; \
 	export FLASK_APP=karrot.wsgi; \
 	export FLASK_ENV=prod; \
-	flask "karrot:create_app()" --bind 127.0.0.1:5000 -w 1
+	gunicorn 'karrot:create_app()' --config karrot/wsgi.py

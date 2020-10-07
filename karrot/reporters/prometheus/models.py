@@ -11,7 +11,7 @@ PROM_TOTAL_LAG = Gauge(
     "karrot_consumer_lag",
     "Total lag accumulated by the consumer",
     labelnames=["cluster", "consumer"],
-    multiprocess_mode="max",
+    multiprocess_mode="liveall",
 )
 
 REPORTER_EVENTS_COUNT = Counter(

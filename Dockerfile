@@ -36,4 +36,4 @@ WORKDIR /app
 EXPOSE 5000
 
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["karrot:create_app()", "--bind :5000", "-w 4"]
+CMD ["karrot:create_app()", "--config", "karrot/wsgi.py"]

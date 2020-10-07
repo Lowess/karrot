@@ -4,7 +4,7 @@
 import sys
 import datetime
 import boto3
-from botocore.exceptions import ClientError, ParamValidationError
+from botocore.exceptions import ClientError, ParamValidationError, NoCredentialsError
 
 from structlog import get_logger
 from flask import current_app as app
@@ -38,9 +38,8 @@ class CloudwatchReporter(Reporter):
             else:
                 self._client = boto3.client("cloudwatch")
                 logger.info("Initialized boto client successfully")
-        except (ClientError, ParamValidationError) as e:
+        except (ClientError, ParamValidationError, NoCredentialsError) as e:
             logger.exception("Cloudn't initialize boto client", error=str(e))
-            sys.exit(1)
 
         self._metrics = []
         self._namespace = app.config["KARROT_CLOUDWATCH_NAMESPACE"]
@@ -119,6 +118,13 @@ class CloudwatchReporter(Reporter):
 
                 self._last_flush_ts = datetime.datetime.now()
                 self._metrics = []
+            except NoCredentialsError:
+                logger.exception(
+                    "Could not find AWS credentials. "
+                    "Karrot will exit as it cannot report metrics to Cloudwatch"
+                )
+                sys.exit(1)
+
             except Exception:
                 logger.exception("Lag could not be reported to cloudwatch")
                 CLOUDWATCH_API_CALLS_COUNT.labels(
